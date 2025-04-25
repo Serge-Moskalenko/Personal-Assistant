@@ -1,0 +1,259 @@
+# ─────────── Monorepo Root ───────────
+# IDE and OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.*.local
+
+# ─────────── Backend (Python / Django) ───────────
+# Byte-compiled / optimized / DLL files
+/backend/__pycache__/
+/backend/*.py[cod]
+/backend/*$py.class
+
+# C extensions
+/backend/*.so
+
+# Distribution / packaging
+/backend/.Python
+/backend/build/
+/backend/develop-eggs/
+/backend/dist/
+/backend/downloads/
+/backend/eggs/
+/backend/.eggs/
+/backend/lib/
+/backend/lib64/
+/backend/parts/
+/backend/sdist/
+/backend/var/
+/backend/wheels/
+/backend/share/python-wheels/
+/backend/*.egg-info/
+/backend/*.egg
+/backend/.installed.cfg
+/backend/MANIFEST
+
+# PyInstaller artifacts
+/backend/*.manifest
+/backend/*.spec
+
+# Installer logs
+/backend/pip-log.txt
+/backend/pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+/backend/htmlcov/
+/backend/.tox/
+/backend/.nox/
+/backend/.coverage
+/backend/.coverage.*
+/backend/.cache
+/backend/nosetests.xml
+/backend/coverage.xml
+/backend/*.cover
+/backend/*.py,cover
+/backend/.hypothesis/
+/backend/.pytest_cache/
+/backend/cover/
+
+# Translations
+/backend/*.mo
+/backend/*.pot
+
+# Django files
+/backend/*.log
+/backend/local_settings.py
+/backend/db.sqlite3
+/backend/db.sqlite3-journal
+
+# Flask instance folder
+/backend/instance/
+/backend/.webassets-cache
+
+# Scrapy files
+/backend/.scrapy
+
+# Sphinx documentation
+/backend/docs/_build/
+
+# PyBuilder
+/backend/.pybuilder/
+/backend/target/
+
+# Jupyter Notebook checkpoints
+/backend/.ipynb_checkpoints
+
+# IPython
+/backend/profile_default/
+/backend/ipython_config.py
+
+# pyenv
+/backend/.python-version
+
+# pipenv lock
+/backend/Pipfile.lock
+
+# UV lock
+/backend/uv.lock
+
+# Poetry lock (keep under version control)
+/backend/poetry.lock
+
+# PDM files
+/backend/pdm.lock
+/backend/.pdm.toml
+/backend/.pdm-python
+/backend/.pdm-build/
+
+# PEP 582 packages
+/backend/__pypackages__/
+
+# Celery beat schedule and PID
+/backend/celerybeat-schedule
+/backend/celerybeat.pid
+
+# SageMath files
+/backend/*.sage.py
+
+# Virtual environments
+/backend/.venv/
+/backend/env/
+/backend/venv/
+/backend/ENV/
+/backend/env.bak/
+/backend/venv.bak/
+
+# Spyder project settings
+/backend/.spyderproject
+/backend/.spyproject
+
+# Rope project settings
+/backend/.ropeproject
+
+# MkDocs build
+/backend/site/
+
+# Type checker caches
+/backend/.mypy_cache/
+/backend/.dmypy.json
+/backend/.pyre/
+/backend/.pytype/
+
+# Cython debug symbols
+/backend/cython_debug/
+
+# IDE files
+/backend/.idea/
+
+# Ruff cache
+/backend/.ruff_cache/
+
+# PyPI config
+/backend/.pypirc
+
+# ─────────── Frontend (Node.js / Next.js) ───────────
+# Logs
+/frontend/logs/
+/frontend/*.log
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/lerna-debug.log*
+/frontend/.pnpm-debug.log*
+
+# Diagnostic reports
+/frontend/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+/frontend/pids/
+/frontend/*.pid
+/frontend/*.seed
+/frontend/*.pid.lock
+
+# Coverage directories
+/frontend/lib-cov/
+/frontend/coverage/
+/frontend/*.lcov
+/frontend/.nyc_output
+
+# Grunt and Bower
+/frontend/.grunt/
+/frontend/bower_components/
+
+# node-waf config
+/frontend/.lock-wscript
+
+# Compiled binary addons
+/frontend/build/Release/
+
+# Dependency directories
+/frontend/node_modules/
+/frontend/jspm_packages/
+/frontend/web_modules/
+
+# Caches and temp files
+/frontend/.npm
+/frontend/.cache/
+/frontend/.parcel-cache/
+/frontend/.turbo/
+/frontend/.vitepress/
+/frontend/.vitepress/dist/
+/frontend/.vitepress/cache/
+
+# TypeScript build info
+/frontend/*.tsbuildinfo
+
+# ESLint / Stylelint caches
+/frontend/.eslintcache
+/frontend/.stylelintcache
+
+# Yarn v2+ cache
+/frontend/.yarn/cache/
+/frontend/.yarn/unplugged/
+/frontend/.yarn/build-state.yml
+/frontend/.yarn/install-state.gz
+/frontend/.pnp.*
+
+# REPL history
+/frontend/.node_repl_history
+
+# npm pack
+/frontend/*.tgz
+
+# Environment files (frontend)
+/frontend/.env
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/.env.local
+
+# Build output
+/frontend/.next/
+/frontend/out/
+/frontend/.nuxt/
+/frontend/dist/
+
+# Static site generators
+/frontend/.cache/
+/frontend/.vuepress/dist/
+/frontend/.temp/
+/frontend/.docusaurus/
+/frontend/.serverless/
+/frontend/.fusebox/
+/frontend/.dynamodb/
+/frontend/.tern-port/
+/frontend/.vscode-test
+
+# Microbundle caches
+/frontend/.rpt2_cache/
+/frontend/.rts2_cache_cjs/
+/frontend/.rts2_cache_es/
+/frontend/.rts2_cache_umd/
+
+# Keep lock files under version control:
+# - backend/poetry.lock
+# - frontend/package-lock.json or yarn.lock
