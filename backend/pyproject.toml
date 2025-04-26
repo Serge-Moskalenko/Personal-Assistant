@@ -6,18 +6,17 @@ authors = ["SerhiiMoskalenko"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.13"
 django = "^5.2"
 djangorestframework = "^3.16"
 django-environ = "^0.12.0"
 pydantic-settings = "^2.9.1"
-psycopg2-binary = "^2.9.10"
+psycopg = { version = "^3.2", extras = ["binary"] }
 alembic = "^1.15.2"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
-isort = "^6.0.1"
 
 [build-system]
 requires = ["poetry-core"]

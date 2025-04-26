@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from envexampl import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -17,7 +18,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "api",
+    "contacts",
 ]
 
 MIDDLEWARE = [
