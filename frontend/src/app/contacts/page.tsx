@@ -1,26 +1,18 @@
-"use client";
+import ContactsClient from "./components/ContactsClient";
 
-import { useEffect, useState } from "react";
-import ContactCard, { Contact } from "../components/ContactCard";
-
-export default function ContactsPage() {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-
-  useEffect(() => {
-    fetch("/api/contacts")
-      .then((res) => res.json())
-      .then(setContacts)
-      .catch(console.error);
-  }, []);
-
+export default async function ContactsPage() {
+  const API = process.env.NEXT_PUBLIC_DJANGO_API_URL!;
+  const res = await fetch(`${API}/contacts/`, {
+    cache: "no-store",
+    headers: { Accept: "application/json" },
+  });
+  if (!res.ok) {
+    return <p>Error loading contacts: {res.status}</p>;
+  }
+  const initialData = await res.json();
   return (
     <section>
-      <h1>Contacts</h1>
-      {contacts.length === 0 ? (
-        <p>No contacts yet.</p>
-      ) : (
-        contacts.map((c) => <ContactCard key={c.id} contact={c} />)
-      )}
+      <ContactsClient initialData={initialData} />
     </section>
   );
 }
