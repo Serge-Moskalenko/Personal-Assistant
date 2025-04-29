@@ -3,8 +3,7 @@
 import type { ContactInput } from "@/types/contact";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, IconButton, Modal, Typography } from "@mui/material";
-import ContactForm from "./ContactForm";
-import { ContactModalProps } from "@/interfaces/form";
+import ContactForm, { ContactFormProps } from "./ContactForm";
 
 const style = {
   position: "absolute" as const,
@@ -18,13 +17,21 @@ const style = {
   borderRadius: 2,
 };
 
+interface Props {
+  open: boolean;
+  initialValues?: ContactInput;
+  onClose: () => void;
+  onSave: (data: ContactInput) => Promise<void>;
+}
+
 export default function ContactModal({
   open,
   onClose,
-  onSubmit,
-}: ContactModalProps) {
-  const handleSubmit = async (data: ContactInput) => {
-    await onSubmit(data);
+  onSave,
+  initialValues,
+}: Props) {
+  const handleSubmit: ContactFormProps["onSubmit"] = async (formData) => {
+    await onSave(formData);
     onClose();
   };
 
@@ -37,12 +44,14 @@ export default function ContactModal({
           alignItems="center"
           mb={2}
         >
-          <Typography variant="h6">Add Contact</Typography>
+          <Typography variant="h6">
+            {initialValues ? "Edit Contact" : "Add Contact"}
+          </Typography>
           <IconButton onClick={onClose} size="small">
             <CloseIcon />
           </IconButton>
         </Box>
-        <ContactForm onSubmit={handleSubmit} />
+        <ContactForm initialValues={initialValues} onSubmit={handleSubmit} />
       </Box>
     </Modal>
   );

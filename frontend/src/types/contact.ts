@@ -5,9 +5,14 @@ export interface Contact {
   address?: string;
   phone_number: string;
   email: string;
-  birthday?: string;
-  created_at: string;
-  updated_at: string;
+  birthday: string | null;
 }
 
-export type ContactInput = Omit<Contact, "id" | "created_at" | "updated_at">;
+export interface PaginatedResponse<T> {
+  results: T[];
+  count: number;
+  next: string | null;
+  previous: string | null;
+}
+
+export type ContactInput = Omit<Contact, "id">;

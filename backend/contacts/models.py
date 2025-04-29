@@ -21,6 +21,8 @@ class Contact(models.Model):
 
     address = models.TextField(
         _("address"),
+        blank=True,
+        null=True,
         help_text=_("Postal address"),
     )
 

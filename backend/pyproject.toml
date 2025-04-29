@@ -13,6 +13,7 @@ django-environ = "^0.12.0"
 pydantic-settings = "^2.9.1"
 psycopg = { version = "^3.2", extras = ["binary"] }
 alembic = "^1.15.2"
+django-filter = "^25.1"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,28 +1,32 @@
 "use client";
 
-import { ContactFormProps } from "@/interfaces/form";
-import { FormSchema } from "@/schemas/form.yup";
-import { FormValues } from "@/types/form";
+import { FormSchema, FormValues } from "@/schemas/form.yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, TextField } from "@mui/material";
-import { useForm, type Resolver } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-export default function ContactForm({ onSubmit }: ContactFormProps) {
-  const resolver = yupResolver(FormSchema) as unknown as Resolver<FormValues>;
+export interface ContactFormProps {
+  initialValues?: FormValues;
+  onSubmit: SubmitHandler<FormValues>;
+}
 
+export default function ContactForm({
+  initialValues,
+  onSubmit,
+}: ContactFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver,
-    defaultValues: {
+    resolver: yupResolver(FormSchema),
+    defaultValues: initialValues ?? {
       first_name: "",
       last_name: "",
       address: "",
       phone_number: "",
       email: "",
-      birthday: "",
+      birthday: null,
     },
   });
 
@@ -36,7 +40,6 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           helperText={errors.first_name?.message}
           fullWidth
         />
-
         <TextField
           label="Last Name"
           {...register("last_name")}
@@ -44,7 +47,6 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           helperText={errors.last_name?.message}
           fullWidth
         />
-
         <TextField
           label="Address"
           {...register("address")}
@@ -52,7 +54,6 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           helperText={errors.address?.message}
           fullWidth
         />
-
         <TextField
           label="Phone Number"
           {...register("phone_number")}
@@ -60,7 +61,6 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           helperText={errors.phone_number?.message}
           fullWidth
         />
-
         <TextField
           label="Email"
           {...register("email")}
@@ -68,7 +68,6 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           helperText={errors.email?.message}
           fullWidth
         />
-
         <TextField
           label="Birthday"
           type="date"
@@ -78,14 +77,8 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
           helperText={errors.birthday?.message}
           fullWidth
         />
-
-        <Button
-          type="submit"
-          variant="contained"
-          disabled={isSubmitting}
-          size="large"
-        >
-          {isSubmitting ? "Creating…" : "Add Contact"}
+        <Button type="submit" variant="contained" disabled={isSubmitting}>
+          {isSubmitting ? "Saving…" : "Save Contact"}
         </Button>
       </Stack>
     </Box>
