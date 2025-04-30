@@ -1,26 +1,15 @@
-// frontend/src/app/contacts/components/ContactsClient.tsx
 "use client";
 
-import type { Contact, PaginatedResponse } from "@/types/contact";
-import { Cake, Delete, Edit, RestartAlt } from "@mui/icons-material";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  IconButton,
-  Pagination,
-  Stack,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
+import type { Contact, PaginatedResponse } from "@/types/Contacts/contact";
+import { Pagination, Stack, Typography } from "@mui/material";
 import { useState } from "react";
+
 import { useContacts } from "../hooks/useContacts";
 import ContactModal from "./ContactModal";
+import ContactsList from "./ContactsList";
+import FiltersBar from "./FiltersBar";
 
-export default function ContactsClient({
+export function ContactsClient({
   initialData,
 }: {
   initialData: PaginatedResponse<Contact>;
@@ -29,9 +18,9 @@ export default function ContactsClient({
   const [daysAhead, setDaysAhead] = useState<number>();
   const [ordering, setOrdering] = useState<string>();
   const [page, setPage] = useState(1);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editContact, setEditContact] = useState<Contact | null>(null);
-  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const {
     data,
@@ -46,157 +35,55 @@ export default function ContactsClient({
     initialData
   );
 
-  const resetFilters = () => {
+  const resetAll = () => {
     setSearch("");
     setDaysAhead(undefined);
     setOrdering(undefined);
     setPage(1);
   };
 
-  const openAdd = () => {
-    setEditContact(null);
-    setModalOpen(true);
-  };
-
-  const openEdit = (c: Contact) => {
-    setEditContact(c);
-    setModalOpen(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    await deleteContact(id);
-    setConfirmDeleteId(null);
-  };
-
   if (error) return <Typography color="error">{error.message}</Typography>;
 
   return (
     <>
-      <Stack direction="row" spacing={1} alignItems="center" mb={2}>
-        <TextField
-          label="Search"
-          size="small"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
+      <div style={{ marginLeft: "10%", marginRight: "10%" }}>
+        <FiltersBar
+          search={search}
+          daysAhead={daysAhead}
+          ordering={ordering}
+          onSearchChange={(v) => {
+            setSearch(v);
             setPage(1);
           }}
-        />
-
-        <ToggleButtonGroup
-          value={ordering}
-          exclusive
-          size="small"
-          color="primary"
-          onChange={(_, v) => {
+          onDaysAheadChange={(v) => {
+            setDaysAhead(v);
+            setPage(1);
+          }}
+          onOrderingChange={(v) => {
             setOrdering(v);
             setPage(1);
           }}
-        >
-          <ToggleButton value="first_name">A→Z</ToggleButton>
-          <ToggleButton value="-first_name">Z→A</ToggleButton>
-        </ToggleButtonGroup>
-
-        <ToggleButtonGroup
-          value={ordering}
-          exclusive
-          size="small"
-          color="primary"
-          onChange={(_, v) => {
-            setOrdering(v);
-            setPage(1);
+          onReset={resetAll}
+          onAdd={() => {
+            setEditContact(null);
+            setModalOpen(true);
           }}
-        >
-          <ToggleButton value="birthday" aria-label="Oldest">
-            <Cake /> ↑
-          </ToggleButton>
-          <ToggleButton value="-birthday" aria-label="Newest">
-            <Cake /> ↓
-          </ToggleButton>
-        </ToggleButtonGroup>
-
-        <TextField
-          label="Next (days)"
-          type="number"
-          size="small"
-          value={daysAhead ?? ""}
-          onChange={(e) => {
-            const v = parseInt(e.target.value, 10);
-            setDaysAhead(isNaN(v) ? undefined : v);
-            setPage(1);
-          }}
-          inputProps={{ min: 0 }}
         />
-
-        <IconButton onClick={resetFilters}>
-          <RestartAlt />
-        </IconButton>
-
-        <Button variant="contained" sx={{ ml: "auto" }} onClick={openAdd}>
-          Add Contact
-        </Button>
-      </Stack>
-
+      </div>
       {loading ? (
         <Typography>Loading…</Typography>
       ) : (
         <>
-          <Stack spacing={2}>
-            {data?.results.map((c) => (
-              <Card key={c.id} variant="outlined" sx={{ maxWidth: 345 }}>
-                <CardContent>
-                  <Typography variant="h6">
-                    {c.first_name} {c.last_name}
-                  </Typography>
-                  <Typography variant="body2">Email: {c.email}</Typography>
-                  <Typography variant="body2">
-                    Phone: {c.phone_number}
-                  </Typography>
-                  <Typography variant="body2">Address: {c.address}</Typography>
-                  <Typography variant="body2">
-                    Birthday: {c.birthday}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <IconButton
-                    color="success"
-                    onClick={() => openEdit(c)}
-                    aria-label="edit"
-                  >
-                    <Edit />
-                  </IconButton>
+          <ContactsList
+            contacts={data?.results || []}
+            onEdit={(c) => {
+              setEditContact(c);
+              setModalOpen(true);
+            }}
+            onDelete={deleteContact}
+          />
 
-                  {confirmDeleteId === c.id ? (
-                    <>
-                      <Button
-                        size="small"
-                        color="error"
-                        onClick={() => handleDelete(c.id)}
-                      >
-                        Confirm Delete
-                      </Button>
-                      <Button
-                        size="small"
-                        onClick={() => setConfirmDeleteId(null)}
-                      >
-                        Cancel
-                      </Button>
-                    </>
-                  ) : (
-                    <IconButton
-                      color="error"
-                      onClick={() => setConfirmDeleteId(c.id)}
-                      aria-label="delete"
-                    >
-                      <Delete />
-                    </IconButton>
-                  )}
-                </CardActions>
-              </Card>
-            ))}
-          </Stack>
-
-          <Stack alignItems="center" mt={2}>
+          <Stack alignItems="center" mt={3}>
             <Pagination
               count={Math.ceil(total / 10)}
               page={page}
@@ -222,11 +109,11 @@ export default function ContactsClient({
               }
             : undefined
         }
-        onSave={async (data) => {
+        onSave={async (vals) => {
           if (editContact) {
-            await updateContact(editContact.id, data);
+            await updateContact(editContact.id, vals);
           } else {
-            await createContact(data);
+            await createContact(vals);
           }
           setModalOpen(false);
           setEditContact(null);

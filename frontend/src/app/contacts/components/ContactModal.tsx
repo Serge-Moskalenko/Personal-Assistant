@@ -1,28 +1,10 @@
 "use client";
 
-import type { ContactInput } from "@/types/contact";
+import { styleModal } from "@/styles/contacts/ContactModal";
+import { Props } from "@/types/Contacts/Components/ContactModal";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, IconButton, Modal, Typography } from "@mui/material";
 import ContactForm, { ContactFormProps } from "./ContactForm";
-
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 2,
-};
-
-interface Props {
-  open: boolean;
-  initialValues?: ContactInput;
-  onClose: () => void;
-  onSave: (data: ContactInput) => Promise<void>;
-}
 
 export default function ContactModal({
   open,
@@ -37,7 +19,7 @@ export default function ContactModal({
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={style}>
+      <Box sx={styleModal}>
         <Box
           display="flex"
           justifyContent="space-between"

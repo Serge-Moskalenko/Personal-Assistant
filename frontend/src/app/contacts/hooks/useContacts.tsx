@@ -1,12 +1,12 @@
-// frontend/src/app/contacts/hooks/useContacts.tsx
+// frontend/src/app/contacts/hooks/useContacts.ts
 "use client";
 
-import type { Contact, ContactInput } from "@/types/contact";
+import type { Contact, ContactInput } from "@/types/Contacts/contact";
 import useSWR from "swr";
 
-const BASE = process.env.NEXT_PUBLIC_DJANGO_API_URL || "http://127.0.0.1:8000";
+const BASE = process.env.NEXT_PUBLIC_DJANGO_API_URL!;
 
-interface PaginatedResponse<T> {
+export interface PaginatedResponse<T> {
   results: T[];
   count: number;
   next: string | null;
@@ -25,7 +25,6 @@ export function useContacts(
   initialData: PaginatedResponse<Contact>
 ) {
   const { page = 1, search, days_ahead, ordering } = opts;
-
   const qs = new URLSearchParams({
     page: String(page),
     ...(search ? { search } : {}),
@@ -33,23 +32,27 @@ export function useContacts(
     ...(ordering ? { ordering } : {}),
   }).toString();
 
+  // Ключ — завжди строка запиту
+  const key = `/contacts/?${qs}`;
+
   const { data, error, isLoading, mutate } = useSWR<PaginatedResponse<Contact>>(
-    `/contacts/?${qs}`,
-    (url) =>
-      fetch(`${BASE}${url}`, { headers: { Accept: "application/json" } }).then(
+    key,
+    // fetcher приймає єдиний параметр — рядок
+    (path) =>
+      fetch(`${BASE}${path}`, { headers: { Accept: "application/json" } }).then(
         (r) => {
           if (!r.ok) throw new Error(r.statusText);
           return r.json();
         }
       ),
     {
-      fallbackData: initialData,
+      fallbackData: initialData, // перший рендер із серверу
       revalidateOnFocus: true,
       refreshInterval: 30_000,
     }
   );
 
-  async function createContact(input: ContactInput) {
+  const createContact = async (input: ContactInput) => {
     const res = await fetch(`${BASE}/contacts/`, {
       method: "POST",
       headers: {
@@ -58,29 +61,28 @@ export function useContacts(
       },
       body: JSON.stringify(input),
     });
-    if (!res.ok) throw new Error("Create failed");
-    await mutate();
-  }
+    if (!res.ok) throw new Error("Failed to create");
+    await mutate(); // оновити сторінку
+  };
 
-  async function updateContact(id: string, input: ContactInput) {
+  const updateContact = async (id: string, input: ContactInput) => {
     const res = await fetch(`${BASE}/contacts/${id}/`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
       body: JSON.stringify(input),
     });
-    if (!res.ok) throw new Error("Update failed");
+    if (!res.ok) throw new Error("Failed to update");
     await mutate();
-  }
+  };
 
-  // видалити
-  async function deleteContact(id: string) {
+  const deleteContact = async (id: string) => {
     const res = await fetch(`${BASE}/contacts/${id}/`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Delete failed");
+    if (!res.ok) throw new Error("Failed to delete");
     await mutate();
-  }
+  };
 
   return {
     data,
