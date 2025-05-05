@@ -1,9 +1,9 @@
 "use client";
 
-import type { Contact, PaginatedResponse } from "@/types/Contacts/contact";
 import { Pagination, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
+import type { Contact } from "@/types/Contacts/contact";
 import { useContacts } from "../hooks/useContacts";
 import ContactModal from "./ContactModal";
 import ContactsList from "./ContactsList";
@@ -46,30 +46,29 @@ export function ContactsClient({
 
   return (
     <>
-      <div style={{ marginLeft: "10%", marginRight: "10%" }}>
-        <FiltersBar
-          search={search}
-          daysAhead={daysAhead}
-          ordering={ordering}
-          onSearchChange={(v) => {
-            setSearch(v);
-            setPage(1);
-          }}
-          onDaysAheadChange={(v) => {
-            setDaysAhead(v);
-            setPage(1);
-          }}
-          onOrderingChange={(v) => {
-            setOrdering(v);
-            setPage(1);
-          }}
-          onReset={resetAll}
-          onAdd={() => {
-            setEditContact(null);
-            setModalOpen(true);
-          }}
-        />
-      </div>
+      <FiltersBar
+        search={search}
+        daysAhead={daysAhead}
+        ordering={ordering}
+        onSearchChange={(v) => {
+          setSearch(v);
+          setPage(1);
+        }}
+        onDaysAheadChange={(v) => {
+          setDaysAhead(v);
+          setPage(1);
+        }}
+        onOrderingChange={(v) => {
+          setOrdering(v);
+          setPage(1);
+        }}
+        onReset={resetAll}
+        onAdd={() => {
+          setEditContact(null);
+          setModalOpen(true);
+        }}
+      />
+
       {loading ? (
         <Typography>Loading…</Typography>
       ) : (
@@ -80,12 +79,12 @@ export function ContactsClient({
               setEditContact(c);
               setModalOpen(true);
             }}
-            onDelete={deleteContact}
+            onDelete={(id) => deleteContact(id)}
           />
 
-          <Stack alignItems="center" mt={3}>
+          <Stack alignItems="center" mt={2}>
             <Pagination
-              count={Math.ceil(total / 10)}
+              count={Math.ceil((data?.count ?? 0) / 10)}
               page={page}
               onChange={(_, v) => setPage(v)}
               color="primary"
@@ -97,18 +96,7 @@ export function ContactsClient({
       <ContactModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        initialValues={
-          editContact
-            ? {
-                first_name: editContact.first_name,
-                last_name: editContact.last_name,
-                address: editContact.address ?? "",
-                phone_number: editContact.phone_number,
-                email: editContact.email,
-                birthday: editContact.birthday,
-              }
-            : undefined
-        }
+        initialValues={editContact ?? undefined}
         onSave={async (vals) => {
           if (editContact) {
             await updateContact(editContact.id, vals);

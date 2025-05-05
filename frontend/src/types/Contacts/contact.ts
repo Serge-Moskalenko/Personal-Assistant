@@ -16,3 +16,10 @@ export interface PaginatedResponse<T> {
 }
 
 export type ContactInput = Omit<Contact, "id">;
+
+export interface UseContactsParams {
+  page?: number;
+  search?: string;
+  days_ahead?: number;
+  ordering?: string;
+}

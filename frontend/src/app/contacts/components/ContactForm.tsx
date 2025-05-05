@@ -3,6 +3,7 @@
 import { FormSchema, FormValues } from "@/schemas/form.yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Stack, TextField } from "@mui/material";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export interface ContactFormProps {
@@ -16,6 +17,7 @@ export default function ContactForm({
 }: ContactFormProps) {
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -29,6 +31,13 @@ export default function ContactForm({
       birthday: null,
     },
   });
+
+
+  useEffect(() => {
+    if (initialValues) {
+      reset(initialValues);
+    }
+  }, [initialValues, reset]);
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
