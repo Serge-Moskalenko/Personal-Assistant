@@ -17,6 +17,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <nav style={{ display: "flex", gap: "1rem" }}>
               <Link href="/">Home</Link>
               <Link href="/contacts">Contacts</Link>
+              <Link href="/notes">Notes</Link>
             </nav>
           </header>
 

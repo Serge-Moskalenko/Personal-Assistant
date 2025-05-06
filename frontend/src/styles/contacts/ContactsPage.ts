@@ -4,5 +4,3 @@ export const pageContactStyles = {
   backgroundRepeat: "no-repeat",
   minHeight: "100vh" as const,
 };
-
-export default pageContactStyles;
