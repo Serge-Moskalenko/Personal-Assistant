@@ -2,17 +2,8 @@
 
 import { http } from "@/shared/services/mainAxios";
 import type { Note, NoteInput, PaginatedResponse } from "@/types/Notes/notes";
+import { Params } from "@/types/Notes/useNotes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-type Params = {
-  page?: number;
-  search?: string;
-  tags?: string;
-  date_from?: string;
-  date_to?: string;
-  status?: string;
-  ordering?: string;
-};
 
 export function useNotes(params: Params) {
   const qc = useQueryClient();

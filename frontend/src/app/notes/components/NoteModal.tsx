@@ -1,5 +1,7 @@
 "use client";
 import { schema } from "@/schemas/notes";
+import { NoteModalProps } from "@/types/Notes/components/NoteModal";
+import type { NoteInput } from "@/types/Notes/notes";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -15,63 +17,62 @@ import {
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-interface FormValues {
-  title: string;
-  content: string;
-  tags: string;
-  reminder_date: string | null;
-  status: string;
-}
+const defaultValues: NoteInput = {
+  title: "",
+  content: "",
+  tags: "",
+  reminder_date: "",
+  status: "",
+};
 
-export default function NoteModal({
-  open,
-  initial,
-  onClose,
-  onSave,
-}: NoteModalProps) {
+export function NoteModal({ open, initial, onClose, onSave }: NoteModalProps) {
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<NoteInput>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      title: initial?.title ?? "",
-      content: initial?.content ?? "",
-
-      tags: initial?.tags?.join(", ") ?? "",
-      reminder_date: initial?.reminder_date ?? null,
-      status: initial?.status ?? "",
-    },
+    defaultValues: initial
+      ? {
+          title: initial.title,
+          content: initial.content,
+          tags: initial.tags.join(", "),
+          reminder_date: initial.reminder_date ?? "",
+          status: initial.status,
+        }
+      : defaultValues,
   });
 
   useEffect(() => {
-    reset({
-      title: initial?.title ?? "",
-      content: initial?.content ?? "",
-      tags: initial?.tags?.join(", ") ?? "",
-      reminder_date: initial?.reminder_date ?? null,
-      status: initial?.status ?? "",
-    });
+    if (initial) {
+      reset({
+        title: initial.title,
+        content: initial.content,
+        tags: initial.tags.join(", "),
+        reminder_date: initial.reminder_date ?? "",
+        status: initial.status,
+      });
+    } else {
+      reset(defaultValues);
+    }
   }, [initial, reset]);
 
-  const onSubmit = (data: FormValues) => {
-    const tagsArray = data.tags
+  const onSubmit = async (data: NoteInput) => {
+    const tagsArray = (data.tags as string)
       .split(",")
       .map((t) => t.trim())
-      .filter((t) => t.length > 0);
+      .filter((t) => t);
 
     const finalTags =
       initial && tagsArray.length === 0 ? initial.tags : tagsArray;
 
-    return onSave({
-      title: data.title,
-      content: data.content,
+    await onSave({
+      ...data,
       tags: finalTags,
-      reminder_date: data.reminder_date,
-      status: data.status,
     });
+
+    reset(defaultValues);
   };
 
   return (
@@ -146,7 +147,10 @@ export default function NoteModal({
                 placeholder="e.g. work, personal"
                 fullWidth
                 error={!!errors.tags}
-                helperText={errors.tags?.message}
+                helperText={
+                  errors.tags?.message ||
+                  (initial ? "Leave empty to keep existing tags" : "")
+                }
               />
             )}
           />
@@ -163,6 +167,7 @@ export default function NoteModal({
                 fullWidth
                 error={!!errors.reminder_date}
                 helperText={errors.reminder_date?.message}
+                value={field.value ?? ""}
               />
             )}
           />
