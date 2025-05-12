@@ -13,15 +13,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="uk">
       <body>
         <Providers>
-          <header style={{ padding: "1rem", borderBottom: "1px solid #ddd" }}>
+          <header
+            style={{
+              padding: "1rem",
+              borderBottom: "1px solid #ddd",
+            }}
+          >
             <nav style={{ display: "flex", gap: "1rem" }}>
               <Link href="/">Home</Link>
               <Link href="/contacts">Contacts</Link>
               <Link href="/notes">Notes</Link>
+              <Link href="/files">Files</Link>
             </nav>
           </header>
 
-          <main>{children}</main>
+          <main style={{ minHeight: 750 }}>{children}</main>
 
           <footer
             style={{

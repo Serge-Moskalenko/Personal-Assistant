@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     ALLOWED_HOSTS: list[str] = []
 
+    AWS_STORAGE_BUCKET_NAME: str
+    AWS_S3_REGION_NAME: str
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 

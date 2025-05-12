@@ -4,7 +4,7 @@ from .models import Note
 
 
 class NoteSerializer(serializers.ModelSerializer):
-    # tags як список для клієнта
+
     tags = serializers.ListField(
         child=serializers.CharField(), required=False, allow_empty=True
     )
@@ -17,13 +17,11 @@ class NoteSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        # перетворюємо записані в БД «a,b,c» у список
         ret["tags"] = instance.tags.split(",") if instance.tags else []
         return ret
 
     def create(self, validated_data):
         tags_list = validated_data.pop("tags", [])
-        # записуємо в БД як рядок
         validated_data["tags"] = ",".join(tags_list)
         return super().create(validated_data)
 

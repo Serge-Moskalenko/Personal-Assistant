@@ -7,11 +7,13 @@ import { ContactsClient } from "./components/ContactsClient";
 
 export default function ContactsPage() {
   return (
-    <Container maxWidth="lg" sx={{ ...pageContactStyles, px: 0 }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Your Contacts
-      </Typography>
-      <ContactsClient />
-    </Container>
+    <div style={{ ...pageContactStyles }}>
+      <Container maxWidth="lg" sx={{ px: 0 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Your Contacts
+        </Typography>
+        <ContactsClient />
+      </Container>
+    </div>
   );
 }

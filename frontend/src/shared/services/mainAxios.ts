@@ -6,7 +6,6 @@ const BASE_URL =
 
 export const http = axios.create({
   baseURL: BASE_URL,
-  headers: { "Content-Type": "application/json" },
 });
 
 http.interceptors.request.use((config) => {
@@ -15,5 +14,6 @@ http.interceptors.request.use((config) => {
     config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
