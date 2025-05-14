@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "notes",
     "storages",
     "files",
+    "news",
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,12 @@ AWS_S3_CUSTOM_DOMAIN = (
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/1"
+CELERY_BEAT_SCHEDULE = {
+    "fetch-bbc-news-every-15-min": {
+        "task": "news.tasks.fetch_bbc",
+        "schedule": 900.0,
+    },
+}

@@ -16,6 +16,11 @@ alembic = "^1.15.2"
 django-filter = "^25.1"
 boto3 = "^1.38.13"
 django-storages = {extras = ["boto3"], version = "^1.14.6"}
+gunicorn = "^23.0.0"
+celery = "^5.5.2"
+redis = "^6.1.0"
+django-cors-headers = "^4.7.0"
+feedparser = "^6.0.11"
 
 
 [tool.poetry.group.dev.dependencies]
