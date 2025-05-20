@@ -1,17 +1,19 @@
 import os
 import uuid
 
+from django.conf import settings as setg
 from django.db import models
 from envexampl import settings
 from storages.backends.s3boto3 import S3Boto3Storage
 
-s3_storage = S3Boto3Storage(
-    bucket_name=settings.AWS_STORAGE_BUCKET_NAME,
-    custom_domain=(
-        f"{settings.AWS_STORAGE_BUCKET_NAME}"
-        f".s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com"
-    ),
-)
+# s3_storage = S3Boto3Storage(
+#     bucket_name=settings.AWS_STORAGE_BUCKET_NAME,
+#     custom_domain=(
+#         f"{settings.AWS_STORAGE_BUCKET_NAME}"
+#         f".s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com"
+#     ),
+# )
+s3_storage = S3Boto3Storage()
 
 
 def upload_to_uuid_by_ext(instance, filename):
@@ -33,6 +35,12 @@ def upload_to_uuid_by_ext(instance, filename):
 class Image(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.ForeignKey(
+        setg.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="images",
+        help_text="Image owner",
+    )
 
     class Category(models.TextChoices):
         IMAGE = "image", "Image"

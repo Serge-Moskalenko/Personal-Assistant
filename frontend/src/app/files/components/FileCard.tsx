@@ -26,9 +26,6 @@ export default function ImageCard({
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const handleDownload = () => {
-    window.open(image.download_url, "_blank");
-  };
   const handleEditSave = (newTitle: string) => {
     onUpdateTitle(image.id, newTitle);
     setEditOpen(false);
@@ -38,6 +35,7 @@ export default function ImageCard({
     onDelete(image.id);
     setDeleteOpen(false);
   };
+  console.log(image);
 
   return (
     <>
@@ -62,7 +60,11 @@ export default function ImageCard({
           </Box>
         </CardContent>
         <CardActions>
-          <IconButton aria-label="download" onClick={handleDownload}>
+          <IconButton
+            component="a"
+            href={image.download_url}
+            aria-label="download"
+          >
             <DownloadIcon />
           </IconButton>
           <IconButton aria-label="edit" onClick={() => setEditOpen(true)}>

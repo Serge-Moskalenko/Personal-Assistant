@@ -1,12 +1,9 @@
-import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
+import { useAuthStore } from "@/stores/useAuthStore";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_DJANGO_API_URL?.replace(/\/$/, "") ?? "";
+const BASE_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL?.replace(/\/$/, "") ?? "";
 
-export const http = axios.create({
-  baseURL: BASE_URL,
-});
+export const http = axios.create({ baseURL: BASE_URL });
 
 http.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
@@ -14,6 +11,5 @@ http.interceptors.request.use((config) => {
     config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
   }
-
   return config;
 });

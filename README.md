@@ -8,3 +8,12 @@ Start frontend
 
 cd frontend
 npm run dev
+
+
+Worker:
+cd backend
+celery -A config worker --pool=solo --loglevel=info
+
+Beat:
+cd backend
+celery -A config beat --loglevel=info

@@ -1,11 +1,15 @@
-import Link from "next/link";
-import type { ReactNode } from "react";
-import "./globals.css";
-
 import Providers from "@/providers/Providers";
+import { Box, Typography } from "@mui/material";
+import type { ReactNode } from "react";
+import NavBar from "./components/NavBar";
 
 export const metadata = {
   title: "Personal Assistant",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -13,31 +17,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="uk">
       <body>
         <Providers>
-          <header
-            style={{
-              padding: "1rem",
-              borderBottom: "1px solid #ddd",
-            }}
-          >
-            <nav style={{ display: "flex", gap: "1rem" }}>
-              <Link href="/">Home</Link>
-              <Link href="/contacts">Contacts</Link>
-              <Link href="/notes">Notes</Link>
-              <Link href="/files">Files</Link>
-            </nav>
-          </header>
+          <NavBar />
 
-          <main style={{ minHeight: 750 }}>{children}</main>
+          {children}
 
-          <footer
-            style={{
+          <Box
+            component="footer"
+            sx={{
+              py: 2,
               textAlign: "center",
-              padding: "1rem 0",
-              borderTop: "1px solid #ddd",
+              borderTop: 1,
+              borderColor: "divider",
             }}
           >
-            © 2025 My Company
-          </footer>
+            <Typography variant="body2">© 2025 My Company</Typography>
+          </Box>
         </Providers>
       </body>
     </html>

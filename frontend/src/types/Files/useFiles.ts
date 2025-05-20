@@ -4,6 +4,7 @@ export interface Image {
   download_url: string;
   category: string;
   uploaded_at: string;
+  original_filename: string;
 }
 
 export interface Paginated<T> {
