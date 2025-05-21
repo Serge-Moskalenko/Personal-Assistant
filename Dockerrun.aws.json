@@ -1,0 +1,7 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [],
+  "compose": {
+    "file": "docker-compose.yml"
+  }
+}

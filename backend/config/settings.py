@@ -165,19 +165,18 @@ AWS_S3_ADDRESSING_STYLE = "virtual"
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/1"
+REDIS_HOST = settings.REDIS_HOST
+REDIS_PORT = settings.REDIS_PORT
+REDIS_PASSWORD = settings.REDIS_PASSWORD
+
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/1"
 CELERY_BEAT_SCHEDULE = {
     "fetch-bbc-news-every-15-min": {
         "task": "news.tasks.fetch_bbc",
         "schedule": 900.0,
     },
 }
-
-
-REDIS_HOST = settings.REDIS_HOST
-REDIS_PORT = settings.REDIS_PORT
-REDIS_PASSWORD = settings.REDIS_PASSWORD
 
 CACHES = {
     "default": {

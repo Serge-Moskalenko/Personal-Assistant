@@ -1,7 +1,6 @@
 Start backend
 
-cd backend
-poetry shell
+
 python manage.py runserver
 
 Start frontend
