@@ -9,9 +9,11 @@ from rest_framework.response import Response
 from .serializers import (
     EmailVerifyCodeConfirmSerializer,
     EmailVerifyCodeRequestSerializer,
+    PasswordResetConfirmSerializer,
+    PasswordResetRequestSerializer,
     RegisterSerializer,
 )
-from .utils import send_verification_code
+from .utils import send_password_reset_code, send_verification_code
 
 User = get_user_model()
 
@@ -74,3 +76,41 @@ class AuthViewSet(viewsets.ViewSet):
         user.is_active = True
         user.save()
         return Response({"detail": "Email confirmed."})
+    
+    @action(detail=False, methods=["post"])
+    def request_password_reset(self, request):
+        ser = PasswordResetRequestSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        user = User.objects.filter(email__iexact=ser.validated_data["email"]).first()
+        if not user:
+            return Response({"detail": "No user with this email was found."},
+                            status=status.HTTP_404_NOT_FOUND)
+        send_password_reset_code(user, settings.SITE_HOST)
+        return Response({"detail": "The password reset code has been sent to your email."})
+
+    @action(detail=False, methods=["post"])
+    def confirm_password_reset(self, request):
+        ser = PasswordResetConfirmSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        email = ser.validated_data["email"]
+        code = ser.validated_data["code"]
+        new_password = ser.validated_data["new_password"]
+
+        cache_key = f"password_reset_code:{email}"
+        real_code = cache.get(cache_key)
+        if real_code is None:
+            return Response({"detail": "Code not found or expired."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if real_code != code:
+            return Response({"detail": "Invalid code."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        user = User.objects.filter(email__iexact=email).first()
+        if not user:
+            return Response({"detail": "User not found."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        user.set_password(new_password)
+        user.save()
+        cache.delete(cache_key)
+        return Response({"detail": "Password changed successfully."})
