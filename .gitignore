@@ -257,3 +257,8 @@
 # Keep lock files under version control:
 # - backend/poetry.lock
 # - frontend/package-lock.json or yarn.lock
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
