@@ -6,8 +6,5 @@ yarn-error.log*
 
 .next/
 
-.env.local
-.env
-
 .git
 .gitignore
