@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   # ========== БД ==========
@@ -32,7 +32,7 @@ services:
     env_file:
       - backend/.env
     ports:
-      - "8000:8000"
+      - "80:8000"
     depends_on:
       - db
       - redis
@@ -69,7 +69,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "80:3000"
     depends_on:
       - backend
     environment:
