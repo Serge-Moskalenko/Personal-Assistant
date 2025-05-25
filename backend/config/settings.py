@@ -169,8 +169,8 @@ REDIS_HOST = settings.REDIS_HOST
 REDIS_PORT = settings.REDIS_PORT
 REDIS_PASSWORD = settings.REDIS_PASSWORD
 
-CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
-CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/1"
+CELERY_BROKER_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0"
+CELERY_RESULT_BACKEND = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1"
 CELERY_BEAT_SCHEDULE = {
     "fetch-bbc-news-every-15-min": {
         "task": "news.tasks.fetch_bbc",
