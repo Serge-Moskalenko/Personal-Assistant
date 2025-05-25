@@ -1,0 +1,3 @@
+Retrieving logs...
+Logs were saved to C:\Work\Code\Personal-Assistant\.elasticbeanstalk\logs\250523_221303
+Logs were saved to C:\Work\Code\Personal-Assistant\.elasticbeanstalk\logs\250523_221303
