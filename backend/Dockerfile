@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir poetry
 RUN poetry config virtualenvs.create false \
     && poetry install --no-root --no-interaction --no-ansi --without dev
 
-COPY . /app
+COPY backend/. /app
 
 EXPOSE 8000
 
