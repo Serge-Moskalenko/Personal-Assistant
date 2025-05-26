@@ -4,12 +4,12 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 
-COPY frontend/package.json frontend/yarn.lock ./
+COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile
 
 
-COPY frontend/. ./
+COPY  . .
 RUN yarn build
 
 

@@ -7,14 +7,14 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY backend/pyproject.toml backend/poetry.lock /app/
+COPY pyproject.toml poetry.lock /app/
 
 RUN pip install --no-cache-dir poetry
 
 RUN poetry config virtualenvs.create false \
     && poetry install --no-root --no-interaction --no-ansi --without dev
 
-COPY backend/. /app
+COPY . /app
 
 EXPOSE 8000
 
