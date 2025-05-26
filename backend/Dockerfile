@@ -7,7 +7,7 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock /app/
+COPY backend/pyproject.toml backend/poetry.lock /app/
 
 RUN pip install --no-cache-dir poetry
 
