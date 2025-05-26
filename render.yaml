@@ -4,8 +4,7 @@ services:
     plan: free
     region: frankfurt
     runtime: docker
-    buildContext: ./backend
-    dockerfilePath: Dockerfile
+    dockerfilePath: backend/Dockerfile
     dockerCommand: >
       sh -c "python manage.py migrate &&
              gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers=3"
@@ -41,8 +40,7 @@ services:
     plan: starter
     region: frankfurt
     runtime: docker
-    buildContext: ./backend
-    dockerfilePath: Dockerfile
+    dockerfilePath: backend/Dockerfile
     dockerCommand: celery -A config worker --pool=solo --loglevel=info
     envVars:
       - key: DATABASE_URL
@@ -60,8 +58,7 @@ services:
     plan: starter
     region: frankfurt
     runtime: docker
-    buildContext: ./backend
-    dockerfilePath: Dockerfile
+    dockerfilePath: backend/Dockerfile
     dockerCommand: celery -A config beat --loglevel=info
     envVars:
       - key: DATABASE_URL
@@ -79,8 +76,7 @@ services:
     plan: free
     region: frankfurt
     runtime: docker
-    buildContext: ./frontend
-    dockerfilePath: Dockerfile
+    dockerfilePath: frontend/Dockerfile
     dockerCommand: yarn start
     envVars:
       - key: NEXT_PUBLIC_DJANGO_API_URL
