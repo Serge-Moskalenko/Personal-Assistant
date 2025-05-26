@@ -100,8 +100,7 @@
 # UV lock
 /backend/uv.lock
 
-# Poetry lock (keep under version control)
-/backend/poetry.lock
+
 
 # PDM files
 /backend/pdm.lock
