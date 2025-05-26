@@ -2,7 +2,7 @@ services:
   - type: web
     name: backend
     plan: free
-    region: london
+    region: frankfurt
     runtime: docker
     dockerfilePath: backend/Dockerfile
     dockerCommand: >
@@ -38,7 +38,7 @@ services:
   - type: worker
     name: celery-worker
     plan: free
-    region: london
+    region: frankfurt
     runtime: docker
     dockerfilePath: backend/Dockerfile
     dockerCommand: celery -A config worker --pool=solo --loglevel=info
@@ -56,7 +56,7 @@ services:
   - type: worker
     name: celery-beat
     plan: free
-    region: london
+    region: frankfurt
     runtime: docker
     dockerfilePath: backend/Dockerfile
     dockerCommand: celery -A config beat --loglevel=info
@@ -74,7 +74,7 @@ services:
   - type: web
     name: frontend
     plan: free
-    region: london
+    region: frankfurt
     runtime: docker
     dockerfilePath: frontend/Dockerfile
     dockerCommand: yarn start
@@ -85,7 +85,7 @@ services:
   - type: redis
     name: personal-assistant-redis
     plan: free
-    region: london
+    region: frankfurt
     ipAllowList:
       - source: 0.0.0.0/0
         description: everywhere
@@ -93,4 +93,4 @@ services:
 databases:
   - name: personal-assistant-db
     plan: free
-    region: london
+    region: frankfurt
