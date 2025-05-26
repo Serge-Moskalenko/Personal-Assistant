@@ -87,7 +87,8 @@ services:
     plan: free
     region: london
     ipAllowList:
-      - 0.0.0.0/0
+      - source: 0.0.0.0/0
+        description: everywhere
 
 databases:
   - name: personal-assistant-db
