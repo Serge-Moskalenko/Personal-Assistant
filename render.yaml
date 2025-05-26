@@ -4,7 +4,7 @@ services:
     plan: free
     region: frankfurt
     runtime: docker
-    dockerContext:: backend
+    dockerContext: backend
     dockerfilePath: Dockerfile
     dockerCommand: >
       sh -c "python manage.py migrate &&
@@ -41,7 +41,7 @@ services:
     plan: starter
     region: frankfurt
     runtime: docker
-    dockerContext:: backend
+    dockerContext: backend
     dockerfilePath: Dockerfile
     dockerCommand: celery -A config worker --pool=solo --loglevel=info
     envVars:
@@ -60,7 +60,7 @@ services:
     plan: starter
     region: frankfurt
     runtime: docker
-    dockerContext:: backend
+    dockerContext: backend
     dockerfilePath: Dockerfile
     dockerCommand: celery -A config beat --loglevel=info
     envVars:
@@ -79,7 +79,7 @@ services:
     plan: free
     region: frankfurt
     runtime: docker
-    dockerContext:: frontend
+    dockerContext: frontend
     dockerfilePath: Dockerfile
     dockerCommand: yarn start
     envVars:
