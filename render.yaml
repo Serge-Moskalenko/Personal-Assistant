@@ -6,7 +6,7 @@ services:
     runtime: docker
     dockerContext: backend
     dockerfilePath: backend/Dockerfile
-    dockerCommand: >
+    startCommand: >
       sh -c "python manage.py migrate &&
              gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers=3"
     envVars:
@@ -43,7 +43,7 @@ services:
     runtime: docker
     dockerContext: backend
     dockerfilePath: backend/Dockerfile
-    dockerCommand: celery -A config worker --pool=solo --loglevel=info
+    startCommand: celery -A config worker --pool=solo --loglevel=info
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -62,7 +62,7 @@ services:
     runtime: docker
     dockerContext: backend
     dockerfilePath: backend/Dockerfile
-    dockerCommand: celery -A config beat --loglevel=info
+    startCommand: celery -A config beat --loglevel=info
     envVars:
       - key: DATABASE_URL
         fromDatabase:
