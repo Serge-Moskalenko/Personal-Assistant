@@ -163,12 +163,10 @@ AWS_S3_ADDRESSING_STYLE = "virtual"
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-REDIS_HOST = settings.REDIS_HOST
-REDIS_PORT = settings.REDIS_PORT
-REDIS_PASSWORD = settings.REDIS_PASSWORD
+REDIS_URL = settings.REDIS_URL
 
-CELERY_BROKER_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0"
-CELERY_RESULT_BACKEND = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1"
+CELERY_BROKER_URL = f"{REDIS_URL}/0"
+CELERY_RESULT_BACKEND = f"{REDIS_URL}/1"
 CELERY_BEAT_SCHEDULE = {
     "fetch-bbc-news-every-15-min": {
         "task": "news.tasks.fetch_bbc",
@@ -179,7 +177,7 @@ CELERY_BEAT_SCHEDULE = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/2",
+        "LOCATION": f"{REDIS_URL}/2",
         "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
     }
 }

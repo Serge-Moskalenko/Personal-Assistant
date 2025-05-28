@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     EMAIL_HOST_USER: str
     EMAIL_HOST_PASSWORD: str
 
+    REDIS_URL:str
     REDIS_HOST: str
     REDIS_PORT: str
     REDIS_PASSWORD: str
