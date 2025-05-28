@@ -5,7 +5,7 @@ class Settings(BaseSettings):
 
     POSTGRES_DB: str
     POSTGRES_USER: str
-    POSTGRES_PASSWORD: int
+    POSTGRES_PASSWORD: str
     DB_HOST: str = "127.0.0.1"
     DB_PORT: int = 5432
     DATABASE_URL: str
