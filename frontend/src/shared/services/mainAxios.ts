@@ -1,14 +1,9 @@
 import { useAuthStore } from "@/stores/useAuthStore";
-import axios from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
-export const BASE_URL = (process.env.NEXT_PUBLIC_DJANGO_API_URL ?? "").replace(
-  /\/$/,
-  ""
-);
+const BASE_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL!.replace(/\/$/, "");
 
-export const http = axios.create({
-  baseURL: BASE_URL,
-});
+export const http = axios.create({ baseURL: BASE_URL });
 
 let isRefreshing = false;
 let failedQueue: {
@@ -18,37 +13,39 @@ let failedQueue: {
 
 function processQueue(error: any, token: string | null = null) {
   failedQueue.forEach((p) => {
-    if (error) p.reject(error);
-    else p.resolve(token!);
+    error ? p.reject(error) : p.resolve(token!);
   });
   failedQueue = [];
 }
 
-http.interceptors.request.use((config) => {
-  const { accessToken } = useAuthStore.getState();
-  if (accessToken) {
-    config.headers = config.headers || {};
-    config.headers.Authorization = `Bearer ${accessToken}`;
+http.interceptors.request.use((cfg) => {
+  const token = useAuthStore.getState().accessToken;
+  if (token) {
+    cfg.headers = cfg.headers || {};
+    cfg.headers.Authorization = `Bearer ${token}`;
   }
-  return config;
+  return cfg;
 });
 
 http.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    const originalRequest = err.config;
+  (response) => response,
+  (
+    error: AxiosError & { config?: AxiosRequestConfig & { _retry?: boolean } }
+  ) => {
+    const originalReq = error.config!;
 
-    if (err.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalReq._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then((token) => {
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return http(originalRequest);
+          originalReq.headers = originalReq.headers || {};
+          originalReq.headers.Authorization = `Bearer ${token}`;
+          return http(originalReq);
         });
       }
 
-      originalRequest._retry = true;
+      originalReq._retry = true;
       isRefreshing = true;
 
       const { refreshToken, setTokens, clearTokens } = useAuthStore.getState();
@@ -59,30 +56,28 @@ http.interceptors.response.use(
           { refresh: refreshToken },
           { headers: { "Content-Type": "application/json" } }
         )
-        .then(({ data }) => {
-          const newAccess = data.access;
-          const newRefresh = data.refresh ?? refreshToken;
-          setTokens(newAccess, newRefresh);
+        .then((res) => {
+          const newAccess = res.data.access as string;
+          const newRefresh = (res.data.refresh as string) || refreshToken;
 
+          setTokens(newAccess, newRefresh);
           http.defaults.headers.common.Authorization = `Bearer ${newAccess}`;
-          originalRequest.headers.Authorization = `Bearer ${newAccess}`;
+          originalReq.headers.Authorization = `Bearer ${newAccess}`;
 
           processQueue(null, newAccess);
-
-          return http(originalRequest);
+          return http(originalReq);
         })
-        .catch((refreshError) => {
-          processQueue(refreshError, null);
+        .catch((err) => {
+          processQueue(err, null);
           clearTokens();
-
           window.location.href = "/login";
-          return Promise.reject(refreshError);
+          return Promise.reject(err);
         })
         .finally(() => {
           isRefreshing = false;
         });
     }
 
-    return Promise.reject(err);
+    return Promise.reject(error);
   }
 );
