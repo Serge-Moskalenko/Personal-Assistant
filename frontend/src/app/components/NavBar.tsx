@@ -30,7 +30,7 @@ export default function NavBar() {
               <Button
                 color="inherit"
                 onClick={() => {
-                  useAuthStore.getState().clearToken();
+                  useAuthStore.getState().clearTokens();
                   window.location.href = "/login";
                 }}
               >
