@@ -23,12 +23,12 @@ class Settings(BaseSettings):
     EMAIL_HOST_USER: str
     EMAIL_HOST_PASSWORD: str
 
-    REDIS_URL:str
+    REDIS_URL: str
     REDIS_HOST: str
     REDIS_PORT: str
     REDIS_PASSWORD: str
 
-    SITE_HOST_URL:list[str]
+    SITE_HOST_URL: str
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
