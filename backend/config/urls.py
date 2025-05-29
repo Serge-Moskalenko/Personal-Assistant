@@ -19,6 +19,18 @@ router.register("auth", AuthViewSet, basename="auth")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
-    path("token/", TokenObtainPairView.as_view(permission_classes=[AllowAny]), name="token_obtain_pair"),
-    path("token/refresh/", TokenRefreshView.as_view(permission_classes=[AllowAny]), name="token_refresh"),
+    path(
+        "token/",
+        TokenObtainPairView.as_view(
+            authentication_classes=[], permission_classes=[AllowAny]
+        ),
+        name="token_obtain_pair",
+    ),
+    path(
+        "token/refresh/",
+        TokenRefreshView.as_view(
+            authentication_classes=[], permission_classes=[AllowAny]
+        ),
+        name="token_refresh",
+    ),
 ]
