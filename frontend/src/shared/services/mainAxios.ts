@@ -2,7 +2,10 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
 import { NextRouter, useRouter } from "next/navigation";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE!.replace(/\/$/, "");
+export const BASE_URL = (process.env.NEXT_PUBLIC_API_BASE ?? "").replace(
+  /\/$/,
+  ""
+);
 
 export const http = axios.create({
   baseURL: BASE_URL,
