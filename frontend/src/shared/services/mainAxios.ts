@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
 import { NextRouter, useRouter } from "next/navigation";
 
-export const BASE_URL = (process.env.NEXT_PUBLIC_API_BASE ?? "").replace(
+export const BASE_URL = (process.env.NEXT_PUBLIC_DJANGO_API_URL ?? "").replace(
   /\/$/,
   ""
 );
