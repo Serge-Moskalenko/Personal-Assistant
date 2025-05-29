@@ -1,8 +1,8 @@
 "use client";
 
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export function useAuthGuard() {
   const router = useRouter();
@@ -14,4 +14,5 @@ export function useAuthGuard() {
       router.replace("/login");
     }
   }, [accessToken]);
+
 }
