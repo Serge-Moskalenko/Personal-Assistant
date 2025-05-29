@@ -10,64 +10,68 @@ interface JwtPayload {
 
 export function useAuthGuard() {
   const router = useRouter();
-  const { token, setToken, clearToken } = useAuthStore();
-  const [rehydrated, setRehydrated] = useState(false);
-  const refreshTimeout = useRef<NodeJS.Timeout | null>(null);
+  const { accessToken, refreshToken, setTokens, clearTokens } = useAuthStore();
+  const [hydrated, setHydrated] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  const API = process.env.NEXT_PUBLIC_API_BASE!;
 
   useEffect(() => {
     if (useAuthStore.persist.hasHydrated) {
-      setRehydrated(true);
+      setHydrated(true);
     }
   }, []);
 
   useEffect(() => {
-    if (!rehydrated) return;
-    if (!token) {
+    if (!hydrated) return;
+    if (!accessToken) {
+      clearTokens();
       router.replace("/login");
     }
-  }, [token, rehydrated]);
+  }, [accessToken, hydrated]);
 
   useEffect(() => {
-    if (!rehydrated || !token) return;
+    if (!hydrated || !accessToken || !refreshToken) return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    if (refreshTimeout.current) {
-      clearTimeout(refreshTimeout.current);
+    let payload: JwtPayload;
+    try {
+      payload = jwtDecode<JwtPayload>(accessToken);
+    } catch {
+      clearTokens();
+      return router.replace("/login");
     }
 
-    try {
-      const { exp } = jwtDecode<JwtPayload>(token);
-      const expiresAt = exp * 1000;
-      const now = Date.now();
-      const buffer = 30 * 1000;
-      const refreshIn = expiresAt - now - buffer;
+    const expiresMs = payload.exp * 1000;
+    const now = Date.now();
+    const buffer = 30_000; // 30s
+    const msToRefresh = expiresMs - now - buffer;
 
-      if (refreshIn <= 0) {
-        doTokenRefresh();
-      } else {
-        refreshTimeout.current = setTimeout(doTokenRefresh, refreshIn);
-      }
-    } catch (e) {
-      clearToken();
-      router.replace("/login");
+    if (msToRefresh <= 0) {
+      refresh();
+    } else {
+      timeoutRef.current = setTimeout(refresh, msToRefresh);
     }
 
     return () => {
-      if (refreshTimeout.current) clearTimeout(refreshTimeout.current);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [token, rehydrated]);
+  }, [accessToken, refreshToken, hydrated]);
 
-  async function doTokenRefresh() {
+  async function refresh() {
     try {
-      const res = await fetch("/token/refresh/", {
+      const res = await fetch(`${API}/token/refresh/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refresh: useAuthStore.getState().refreshToken }),
+
+        body: JSON.stringify({ refresh: refreshToken }),
       });
-      if (!res.ok) throw new Error("Refresh failed");
+      if (!res.ok) throw new Error("Refresh error");
       const data = await res.json();
-      setToken(data.access);
-    } catch (err) {
-      clearToken();
+
+      setTokens(data.access, data.refresh ?? refreshToken);
+    } catch {
+      clearTokens();
       router.replace("/login");
     }
   }
