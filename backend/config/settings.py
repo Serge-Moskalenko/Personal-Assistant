@@ -182,4 +182,4 @@ CACHES = {
     }
 }
 
-SITE_HOST = os.getenv("SITE_HOST", "http://localhost:3000")
+SITE_HOST = [settings.SITE_HOST_URL, "http://localhost:3000"]

@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     REDIS_PORT: str
     REDIS_PASSWORD: str
 
+    SITE_HOST_URL:list[str]
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 
