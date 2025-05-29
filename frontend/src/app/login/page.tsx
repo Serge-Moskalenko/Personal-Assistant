@@ -26,7 +26,7 @@ export default function AuthPage() {
       setError("");
       setInfo("");
       const { data } = await http.post("token/", { username, password });
-      useAuthStore.getState().setToken(data.access);
+      useAuthStore.getState().setTokens(data.access, data.refresh);
       router.push("/");
     } catch (e: any) {
       setError(e.response?.data?.detail || "Login error");
