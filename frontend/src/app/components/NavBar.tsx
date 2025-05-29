@@ -1,10 +1,10 @@
 "use client";
-import Link from "next/link";
-import { AppBar, Toolbar, Typography, Button, Container } from "@mui/material";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { AppBar, Button, Container, Toolbar, Typography } from "@mui/material";
+import Link from "next/link";
 
 export default function NavBar() {
-  const token = useAuthStore((state) => state.token);
+  const token = useAuthStore((state) => state.accessToken);
 
   return (
     <AppBar position="static">
