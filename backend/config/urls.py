@@ -5,6 +5,7 @@ from django.urls import include, path
 from files.views import ImageViewSet
 from news.views import NewsItemViewSet
 from notes.views import NoteViewSet
+from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -18,6 +19,6 @@ router.register("auth", AuthViewSet, basename="auth")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
-    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("token/", TokenObtainPairView.as_view(permission_classes=[AllowAny]), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(permission_classes=[AllowAny]), name="token_refresh"),
 ]
