@@ -1,6 +1,6 @@
 "use client";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
