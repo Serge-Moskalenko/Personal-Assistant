@@ -1,7 +1,10 @@
 import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_DJANGO_API_URL?.replace(/\/$/, "")!;
+export const BASE_URL = (process.env.NEXT_PUBLIC_DJANGO_API_URL ?? "").replace(
+  /\/$/,
+  ""
+);
 
 export const http = axios.create({
   baseURL: BASE_URL,
