@@ -63,7 +63,6 @@ All services are packaged into Docker containers and orchestrated via Docker Com
 - **Development & CI**:
   - Poetry (dependency management)
   - Black (code formatting)
-  - Pytest / pytest-django (testing framework)
 
 ### Frontend
 
