@@ -157,10 +157,15 @@ NEXT_PUBLIC_DJANGO_API_URL=http://localhost:8000
     docker-compose up --build
 
 5. Access the running application
+
     Frontend (Next.js UI):
+    ```bash
         http://localhost:3000
+
     Backend (Django API):
+    ```bash
         http://localhost:8000
 
 6. Stopping the services
+    ```bash
     docker-compose down
