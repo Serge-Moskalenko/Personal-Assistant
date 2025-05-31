@@ -1,3 +1,22 @@
+Start backend
+
+
+python manage.py runserver
+
+Start frontend
+
+cd frontend
+npm run dev
+
+
+Worker:
+cd backend
+celery -A config worker --pool=solo --loglevel=info
+
+Beat:
+cd backend
+celery -A config beat --loglevel=info
+
 # Personal Assistant
 
 ## Project Description
