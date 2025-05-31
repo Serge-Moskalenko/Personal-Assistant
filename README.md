@@ -166,8 +166,9 @@ REDIS_URL=redis://:redispassword@redis:6379/0
  ```
 
     frontend:
-
+```bash
 NEXT_PUBLIC_DJANGO_API_URL=http://localhost:8000
+```
 
 3. Verify Docker & Docker Compose are running
 
