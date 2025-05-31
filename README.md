@@ -125,7 +125,7 @@ All services are packaged into Docker containers and orchestrated via Docker Com
 
 2. Create and configure your .env file
    backend:
-
+  ```bash
 # PostgreSQL Credentials
 
 POSTGRES_DB=personal_assistant_db
@@ -163,6 +163,7 @@ REDIS_HOST=redis
 REDIS_PORT=6379
 REDIS_PASSWORD=redispassword
 REDIS_URL=redis://:redispassword@redis:6379/0
+ ```
 
     frontend:
 
