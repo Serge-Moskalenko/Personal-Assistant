@@ -27,6 +27,9 @@ export default function NavBar() {
               <Button color="inherit" component={Link} href="/files">
                 Files
               </Button>
+              <Button color="inherit" component={Link} href="/donations">
+                Donations
+              </Button>
               <Button
                 color="inherit"
                 onClick={() => {

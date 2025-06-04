@@ -11,11 +11,7 @@ import {
 
 import { FiltersBarProps } from "@/types/Notes/components/FilterBar";
 
-export  function FiltersBar({
-  values,
-  onChange,
-  onAdd,
-}: FiltersBarProps) {
+export function FiltersBar({ values, onChange, onAdd }: FiltersBarProps) {
   return (
     <Stack
       direction="row"
@@ -23,7 +19,7 @@ export  function FiltersBar({
       alignItems="center"
       flexWrap="wrap"
       mb={2}
-      sx={{ width: "100%", maxWidth: 900, mx: "auto", px: 2 }}
+      sx={{ width: "100%", maxWidth: 1000, mx: "auto", px: 2 }}
     >
       <TextField
         label="From date"
