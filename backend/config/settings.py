@@ -144,7 +144,11 @@ EMAIL_HOST_PASSWORD = settings.EMAIL_HOST_PASSWORD
 EMAIL_USE_TLS = True
 
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://frontend-17a7.onrender.com"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://192.168.0.19:3000",
+    "https://frontend-17a7.onrender.com",
+]
 
 AWS_STORAGE_BUCKET_NAME = settings.AWS_STORAGE_BUCKET_NAME
 AWS_S3_REGION_NAME = settings.AWS_S3_REGION_NAME
@@ -183,3 +187,5 @@ CACHES = {
 }
 
 SITE_HOST = settings.SITE_HOST_URL
+
+STRIPE_SECRET_KEY = settings.STRIPE_SECRET_KEY

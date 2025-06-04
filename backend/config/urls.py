@@ -19,6 +19,7 @@ router.register("auth", AuthViewSet, basename="auth")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
+    path("payments/", include("payments.urls")),
     path(
         "token/",
         TokenObtainPairView.as_view(
